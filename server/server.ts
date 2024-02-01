@@ -63,7 +63,7 @@ server.use(express.json())
 server.use(cookieParser())
 
 // Standard DB Processing
-listingDB.sequelizeAuth
+listingDB.sequelizeListing
   .sync({ force: false })
   .then(() => {
     console.log('\x1b[32mSynced ListingDB.\x1b[0m')
