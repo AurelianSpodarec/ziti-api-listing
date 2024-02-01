@@ -1,14 +1,14 @@
 // server/api/listings/services/listingService.ts
 
-import Listing from '../models/listingModel'
-import PropertyStatus from '../models/propertyStatusesModel'
-import PropertyType from '../models/propertyTypesModel'
-import Sector from '../models/location/sectorsModel'
-import Organization from '../../../../ziti-api/server/api/blog/models/organizationsModel'
-import Currency from '../models/location/currenciesModel'
-import Municipality from '../models/location/municipalitiesModel'
-import Province from '../models/location/provincesModel'
-import Country from '../models/location/countriesModel'
+import Listing from '@api/models/listingModel'
+import PropertyStatus from '@api/models/propertyStatusesModel'
+import PropertyType from '@api/models/propertyTypesModel'
+import Sector from '@api/models/location/sectorsModel'
+import Organization from '@api/../../../ziti-api/server/api/blog/models/organizationsModel'
+import Currency from '@api/models/location/currenciesModel'
+import Municipality from '@api/models/location/municipalitiesModel'
+import Province from '@api/models/location/provincesModel'
+import Country from '@api/models/location/countriesModel'
 
 export async function listListings (): Promise<{ Listings: Listing[], SchemaData: Record<string, any> }> {
   try {
@@ -111,7 +111,7 @@ export async function getListing (id: string): Promise<{ Listing: Listing | null
   }
 }
 
-export async function createListing (listingData: Partial<Listing>): Promise<Listing> {
+export async function createListing (listingData: Listing): Promise<Listing> {
   try {
     const newListing = await Listing.create(listingData)
     return newListing
