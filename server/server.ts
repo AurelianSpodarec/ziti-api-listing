@@ -5,6 +5,7 @@ import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import dotenv from 'dotenv'
 import express from 'express'
+import listingDB from './listingDB'
 import { getRequiredEnvVariable } from './utils/getRequiredEnvVariable'
 import routes from './routes'
 import customPoweredBy from './middleware/customPoweredBy'
@@ -67,6 +68,16 @@ server.use(express.json())
 
 // Parse cookies
 server.use(cookieParser())
+
+// Standard DB Processing
+listingDB.sequelizeAuth
+  .sync({ force: false })
+  .then(() => {
+    console.log('\x1b[32mSynced ListingDB.\x1b[0m')
+  })
+  .catch((err: Error) => {
+    console.log('\x1b[31mFailed to sync db: ' + err.message + '\x1b[0m')
+  })
 
 // Routes
 server.use(routes)
