@@ -1,9 +1,10 @@
 // server/server.ts
 
-import fs from 'fs'
+// Ensure environment is configured before importing any other modules
+import '@utils/configureEnvironment'
+
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
-import dotenv from 'dotenv'
 import express from 'express'
 import listingDB from './listingDB'
 import { getRequiredEnvVariable } from './utils/getRequiredEnvVariable'
@@ -12,14 +13,6 @@ import customPoweredBy from './middleware/customPoweredBy'
 import { consoleLogging } from './middleware/consoleLogging'
 import { errorHandling } from './middleware/errorHandling'
 import { handle404 } from './middleware/handle404'
-
-if (process.env.NODE_ENV === 'development') {
-  if (fs.existsSync('.env')) {
-    dotenv.config()
-  } else {
-    throw new Error('.env file not found')
-  }
-}
 
 // CORS options configuration
 const corsOptions = {
