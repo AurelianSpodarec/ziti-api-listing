@@ -2,7 +2,7 @@
 
 import { type Request, type Response } from 'express'
 import { getCountries, getCountry, getProvinces, getProvince, getMunicipalities, getMunicipality, getSectors, getSector, searchSectors } from '../services/locationService'
-import { isNumeric } from '../../../../ziti-api/server/utils/isNumber'
+import { isNumeric } from '@utils/isNumber'
 
 export async function countries (req: Request, res: Response): Promise<void> {
   try {

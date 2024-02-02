@@ -4,7 +4,6 @@ import Listing from '@api/models/listingModel'
 import PropertyStatus from '@api/models/propertyStatusesModel'
 import PropertyType from '@api/models/propertyTypesModel'
 import Sector from '@api/models/location/sectorsModel'
-import Organization from '@api/../../../ziti-api/server/api/blog/models/organizationsModel'
 import Currency from '@api/models/location/currenciesModel'
 import Municipality from '@api/models/location/municipalitiesModel'
 import Province from '@api/models/location/provincesModel'
@@ -43,12 +42,6 @@ export async function listListings (): Promise<{ Listings: Listing[], SchemaData
         published: true
       }
     })
-
-    // Fetch organization
-    const organization = await Organization.findOne()
-    if (organization === null) {
-      throw new Error('Organization information not found.')
-    }
 
     // Generate the SchemaData object using the external function
     // const schemaData = generateSchemaData(listings, organization);

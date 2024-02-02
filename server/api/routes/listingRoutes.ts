@@ -2,8 +2,8 @@
 
 import { type Request, type Response, Router, type NextFunction } from 'express'
 import { listings, listing, createListings } from '../controllers/listingsController'
-import { cacheMiddleware } from '../../../../ziti-api/server/middleware/cacheMiddleware'
-import verifyJWT from '../../../../ziti-api/server/middleware/auth/verifyJWT'
+import { cacheMiddleware } from '@middleware/cacheMiddleware'
+import verifyJWT from '@middleware/auth/verifyJWT'
 
 const listingRoutes: Router = Router()
 
