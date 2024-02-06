@@ -9,7 +9,7 @@ import Municipality from '@api/models/location/municipalitiesModel'
 import Province from '@api/models/location/provincesModel'
 import Country from '@api/models/location/countriesModel'
 
-export async function listProperties (): Promise<{ Properties: Property[], SchemaData: Record<string, any> }> {
+export async function getProperties (): Promise<{ Properties: Property[], SchemaData: Record<string, any> }> {
   try {
     // Query the database for properties with related information
     const properties = await Property.findAll({
@@ -100,7 +100,7 @@ export async function getProperty (id: string): Promise<{ Property: Property | n
   }
 }
 
-export async function createProperty (propertyData: Property): Promise<Property> {
+export async function postProperty (propertyData: Property): Promise<Property> {
   try {
     const newProperty = await Property.create(propertyData)
     return newProperty

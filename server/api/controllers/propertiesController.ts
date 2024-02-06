@@ -3,13 +3,13 @@
 import { type Request, type Response } from 'express'
 import { type UniqueConstraintError } from 'sequelize'
 import { z } from 'zod'
-import { listProperties, getProperty, createProperty } from '../services/propertyService'
+import * as propertyService from '../services/propertyService'
 import type Property from '../models/propertyModel'
 
-export async function properties (req: Request, res: Response): Promise<void> {
+export async function getProperties (req: Request, res: Response): Promise<void> {
   try {
     // Get a list of properties
-    const result = await listProperties()
+    const result = await propertyService.getProperties()
     console.log('\x1b[32m200 OK. Sending properties data.\x1b[0m')
     res.json(result)
   } catch (e) {
@@ -26,10 +26,10 @@ const ParamsSchema = z.object({
     .regex(uuidRegex, 'ID must be a valid UUID.')
 })
 
-export async function property (req: Request, res: Response): Promise<void> {
+export async function getProperty (req: Request, res: Response): Promise<void> {
   try {
     const { id } = ParamsSchema.parse(req.params)
-    const result = await getProperty(id)
+    const result = await propertyService.getProperty(id)
     if (result.Property === null) {
       console.error('\x1b[31m404 Not Found.')
       res.status(404).json({ error: 'Not Found' })
@@ -74,10 +74,10 @@ const PropertySchema = z.object({
   sectorId: z.number().nonnegative('Sector ID must be a non-negative number.')
 })
 
-export async function createProperty (req: Request, res: Response): Promise<void> {
+export async function postProperty (req: Request, res: Response): Promise<void> {
   try {
     const propertyData = PropertySchema.parse(req.body)
-    const newProperty = await createProperty(propertyData as Property)
+    const newProperty = await propertyService.postProperty(propertyData as Property)
     console.log('\x1b[32m201 CREATED. Sending new property data.\x1b[0m')
     res.status(201).json(newProperty)
   } catch (e) {
