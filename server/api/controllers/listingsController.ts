@@ -6,16 +6,6 @@ import { z } from 'zod'
 import { listListings, getListing, createListing } from '../services/listingService'
 import type Listing from '../models/listingModel'
 
-const ParamsSchema = z.object({
-  id: z.string().min(1, 'ID is required.')
-})
-
-const ListingSchema = z.object({
-  title: z.string().min(1, 'Title is required.'),
-  description: z.string().min(1, 'Description is required.'),
-  price: z.number().nonnegative()
-})
-
 export async function listings (req: Request, res: Response): Promise<void> {
   try {
     // Get a list of listings
@@ -29,10 +19,14 @@ export async function listings (req: Request, res: Response): Promise<void> {
   }
 }
 
+const ParamsSchema = z.object({
+  id: z.string().min(1, 'ID is required.')
+})
+
 export async function listing (req: Request, res: Response): Promise<void> {
   try {
     const { id } = ParamsSchema.parse(req.params)
-    const result = await getListing(id as string)
+    const result = await getListing(id)
     console.log('\x1b[32m200 OK. Sending listing data.\x1b[0m')
     res.json(result.Listing)
   } catch (e) {
@@ -41,6 +35,12 @@ export async function listing (req: Request, res: Response): Promise<void> {
     res.status(500).send({ error: 'Problem fetching listing.' })
   }
 }
+
+const ListingSchema = z.object({
+  title: z.string().min(1, 'Title is required.'),
+  description: z.string().min(1, 'Description is required.'),
+  price: z.number().nonnegative()
+})
 
 export async function createListings (req: Request, res: Response): Promise<void> {
   try {
