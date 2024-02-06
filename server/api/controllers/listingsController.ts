@@ -47,8 +47,14 @@ const ListingSchema = z.object({
   backyard: z.boolean().refine(val => typeof val === 'boolean', 'Backyard must be a boolean.'),
   pool: z.boolean().refine(val => typeof val === 'boolean', 'Pool must be a boolean.'),
   jacuzzi: z.boolean().refine(val => typeof val === 'boolean', 'Jacuzzi must be a boolean.'),
-  availabilityDate: z.union([z.date(), z.null()]).optional().refine(val => val !== undefined, 'Availability date must be a date or null.'),
-  constructionYear: z.union([z.date(), z.null()]).optional().refine(val => val !== undefined, 'Construction year must be a date or null.'),
+  availabilityDate: z.union([z.date(), z.null()])
+    .optional()
+    .transform((val) => val !== null && val !== undefined ? new Date(val) : val)
+    .refine(val => val !== undefined, 'Availability date must be a date or null.'),
+  constructionYear: z.union([z.date(), z.null()])
+    .optional()
+    .transform((val) => val !== null && val !== undefined ? new Date(val) : val)
+    .refine(val => val !== undefined, 'Construction year must be a date or null.'),
   price: z.number().nonnegative('Price must be a non-negative number.'),
   published: z.boolean().refine(val => typeof val === 'boolean', 'Published must be a boolean.'),
   reported: z.boolean().refine(val => typeof val === 'boolean', 'Reported must be a boolean.'),
