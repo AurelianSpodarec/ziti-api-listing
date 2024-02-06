@@ -19,20 +19,33 @@ export async function listings (req: Request, res: Response): Promise<void> {
   }
 }
 
+const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+
 const ParamsSchema = z.object({
-  id: z.string().min(1, 'ID is required.')
+  id: z.string()
+    .regex(uuidRegex, 'ID must be a valid UUID.')
 })
 
 export async function listing (req: Request, res: Response): Promise<void> {
   try {
     const { id } = ParamsSchema.parse(req.params)
     const result = await getListing(id)
+    if (result.Listing === null) {
+      console.error('\x1b[31m404 Not Found.')
+      res.status(404).json({ error: 'Not Found' })
+      return
+    }
     console.log('\x1b[32m200 OK. Sending listing data.\x1b[0m')
     res.json(result.Listing)
   } catch (e) {
-    const error = e as Error
-    console.error(error.message)
-    res.status(500).send({ error: 'Problem fetching listing.' })
+    if (e instanceof z.ZodError) {
+      console.error('\x1b[31m400 Bad Request. Validation error:', e.errors[0].message, '\x1b[0m')
+      res.status(400).json({ error: e.errors[0].message })
+    } else {
+      const error = e as Error
+      console.error(error.message)
+      res.status(500).send({ error: 'Problem fetching listing.' })
+    }
   }
 }
 

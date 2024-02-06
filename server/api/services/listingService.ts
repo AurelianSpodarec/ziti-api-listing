@@ -90,10 +90,6 @@ export async function getListing (id: string): Promise<{ Listing: Listing | null
     })
 
     if (listing === null) {
-      console.log(
-        '\x1b[31m%s\x1b[0m',
-        'Post not found, returning null'
-      )
       return { Listing: null } // Return null when listing is not found
     }
 
