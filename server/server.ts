@@ -6,7 +6,7 @@ import '@utils/configureEnvironment'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import express from 'express'
-import propertyDB from './propertyDB'
+import listingDB from './listingDB'
 import { getRequiredEnvVariable } from './utils/getRequiredEnvVariable'
 import './utils/redis'
 import routes from './routes'
@@ -64,13 +64,13 @@ server.use(express.json())
 server.use(cookieParser())
 
 // Standard DB Processing
-propertyDB.sequelizeProperty
+listingDB.sequelizeProperty
   .sync({ force: false })
   .then(() => {
-    console.log('\x1b[32mSynced propertyDB.\x1b[0m')
+    console.log('\x1b[32mSynced listingDB.\x1b[0m')
   })
   .catch((err: Error) => {
-    console.log('\x1b[31mFailed to sync propertyDB: ' + err.message + '\x1b[0m')
+    console.log('\x1b[31mFailed to sync listingDB: ' + err.message + '\x1b[0m')
   })
 
 // Routes

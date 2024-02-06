@@ -1,4 +1,4 @@
-// server/propertyDB.ts
+// server/listingDB.ts
 
 import { Sequelize } from 'sequelize'
 import config from './config/postgres'
@@ -15,18 +15,18 @@ import { initSector } from '@api/models/location/sectorsModel'
 
 // Initialize Sequelize instance
 const sequelizeProperty = new Sequelize(
-  config.propertyDBConfig.DB,
-  config.propertyDBConfig.USER,
-  config.propertyDBConfig.PASSWORD,
+  config.listingDBConfig.DB,
+  config.listingDBConfig.USER,
+  config.listingDBConfig.PASSWORD,
   {
-    host: config.propertyDBConfig.HOST,
-    port: config.propertyDBConfig.PORT,
-    dialect: config.propertyDBConfig.dialect,
+    host: config.listingDBConfig.HOST,
+    port: config.listingDBConfig.PORT,
+    dialect: config.listingDBConfig.dialect,
     pool: {
-      max: config.propertyDBConfig.pool.max,
-      min: config.propertyDBConfig.pool.min,
-      acquire: config.propertyDBConfig.pool.acquire,
-      idle: config.propertyDBConfig.pool.idle
+      max: config.listingDBConfig.pool.max,
+      min: config.listingDBConfig.pool.min,
+      acquire: config.listingDBConfig.pool.acquire,
+      idle: config.listingDBConfig.pool.idle
     }
   }
 )
@@ -57,7 +57,7 @@ Currency.associate({ Property })
 Property.associate({ PropertyStatus, PropertyType, Currency, Sector })
 
 // Initialize the db object
-const propertyDB: any = {
+const listingDB: any = {
   Sequelize,
   sequelizeProperty,
   Country,
@@ -70,4 +70,4 @@ const propertyDB: any = {
   Property
 }
 
-export default propertyDB
+export default listingDB

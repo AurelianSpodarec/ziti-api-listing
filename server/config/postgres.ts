@@ -7,12 +7,12 @@ function parseIntSafe (value: string, defaultValue: number): number {
   return isNaN(parsedValue) ? defaultValue : parsedValue
 }
 
-const propertyDBConfig = {
-  HOST: getRequiredEnvVariable('PROPERTYDB_HOST'),
-  PORT: parseIntSafe(getRequiredEnvVariable('PROPERTYDB_PORT'), 5432),
-  USER: getRequiredEnvVariable('PROPERTYDB_USER'),
-  PASSWORD: getRequiredEnvVariable('PROPERTYDB_PASSWORD'),
-  DB: getRequiredEnvVariable('PROPERTYDB_DATABASE'),
+const listingDBConfig = {
+  HOST: getRequiredEnvVariable('LISTDB_HOST'),
+  PORT: parseIntSafe(getRequiredEnvVariable('LISTDB_PORT'), 5432),
+  USER: getRequiredEnvVariable('LISTDB_USER'),
+  PASSWORD: getRequiredEnvVariable('LISTDB_PASSWORD'),
+  DB: getRequiredEnvVariable('LISTDB_DATABASE'),
   dialect: 'postgres' as const,
   pool: {
     max: parseIntSafe(getRequiredEnvVariable('DB_POOL_MAX'), 10),
@@ -22,4 +22,4 @@ const propertyDBConfig = {
   }
 }
 
-export default { propertyDBConfig }
+export default { listingDBConfig }
