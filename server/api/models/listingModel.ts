@@ -30,8 +30,8 @@ import type Sector from '@api/models/location/sectorsModel'
 class Listing extends Model<InferAttributes<Listing>, InferCreationAttributes<Listing>> {
   declare id: string
   declare title: string
-  declare description: string | null
-  declare address: string | null
+  declare description: string
+  declare address: string
   declare squareFeet: number | null
   declare bedrooms: number
   declare bathrooms: number
@@ -41,7 +41,7 @@ class Listing extends Model<InferAttributes<Listing>, InferCreationAttributes<Li
   declare jacuzzi: boolean
   declare availabilityDate: Date | null
   declare constructionYear: Date | null
-  declare price: number | null
+  declare price: number
   declare published: boolean
   declare reported: boolean
   declare disabled: boolean
@@ -138,10 +138,12 @@ export const initListing = (sequelize: Sequelize): typeof Listing => {
       allowNull: false
     },
     description: {
-      type: DataTypes.TEXT
+      type: DataTypes.TEXT,
+      allowNull: false
     },
     address: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      allowNull: false
     },
     squareFeet: {
       type: DataTypes.INTEGER,
@@ -181,7 +183,7 @@ export const initListing = (sequelize: Sequelize): typeof Listing => {
     },
     price: {
       type: DataTypes.FLOAT,
-      allowNull: true
+      allowNull: false
     },
     published: {
       type: DataTypes.BOOLEAN,
