@@ -1,4 +1,4 @@
-// server/api/listings/models/listingModel.ts
+// server/api/properties/models/propertyModel.ts
 
 import {
   Model,
@@ -27,7 +27,7 @@ import type PropertyStatus from '@api/models/propertyStatusesModel'
 import type Currency from '@api/models/location/currenciesModel'
 import type Sector from '@api/models/location/sectorsModel'
 
-class Listing extends Model<InferAttributes<Listing>, InferCreationAttributes<Listing>> {
+class Property extends Model<InferAttributes<Property>, InferCreationAttributes<Property>> {
   declare id: string
   declare title: string
   declare description: string
@@ -73,7 +73,7 @@ class Listing extends Model<InferAttributes<Listing>, InferCreationAttributes<Li
   declare hasPropertyStatus: HasManyHasAssociationMixin<PropertyStatus, number>
   declare hasPropertyStatuses: HasManyHasAssociationsMixin<PropertyStatus, number>
   declare countPropertyStatuses: HasManyCountAssociationsMixin
-  declare createPropertyStatus: HasManyCreateAssociationMixin<PropertyStatus>
+  declare createPropertytatus: HasManyCreateAssociationMixin<PropertyStatus>
 
   // Currency associations
   declare getCurrencies: HasManyGetAssociationsMixin<Currency>
@@ -105,10 +105,10 @@ class Listing extends Model<InferAttributes<Listing>, InferCreationAttributes<Li
   public Sectors?: Sector[]
 
   declare static associations: {
-    PropertyTypes: Association<Listing, PropertyType>
-    PropertyStatuses: Association<Listing, PropertyStatus>
-    Currencies: Association<Listing, Currency>
-    Sectors: Association<Listing, Sector>
+    PropertyTypes: Association<Property, PropertyType>
+    PropertyStatuses: Association<Property, PropertyStatus>
+    Currencies: Association<Property, Currency>
+    Sectors: Association<Property, Sector>
   }
 
   public static associate (models: {
@@ -117,15 +117,15 @@ class Listing extends Model<InferAttributes<Listing>, InferCreationAttributes<Li
     Currency: typeof Currency
     Sector: typeof Sector
   }): void {
-    Listing.belongsTo(models.PropertyType, { foreignKey: 'propertyTypeId' })
-    Listing.belongsTo(models.PropertyStatus, { foreignKey: 'propertyStatusId' })
-    Listing.belongsTo(models.Currency, { foreignKey: 'currencyId' })
-    Listing.belongsTo(models.Sector, { foreignKey: 'sectorId' })
+    Property.belongsTo(models.PropertyType, { foreignKey: 'propertyTypeId' })
+    Property.belongsTo(models.PropertyStatus, { foreignKey: 'propertyStatusId' })
+    Property.belongsTo(models.Currency, { foreignKey: 'currencyId' })
+    Property.belongsTo(models.Sector, { foreignKey: 'sectorId' })
   }
 }
 
-export const initListing = (sequelize: Sequelize): typeof Listing => {
-  Listing.init({
+export const initProperty = (sequelize: Sequelize): typeof Property => {
+  Property.init({
     id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
@@ -189,7 +189,7 @@ export const initListing = (sequelize: Sequelize): typeof Listing => {
       type: DataTypes.BOOLEAN,
       defaultValue: false
     },
-    reported: { // Maybe we need a listings_reported table to map listings and users who have reported them
+    reported: { // Maybe we need a properties_reported table to map properties and users who have reported them
       type: DataTypes.BOOLEAN,
       defaultValue: false
     },
@@ -203,10 +203,10 @@ export const initListing = (sequelize: Sequelize): typeof Listing => {
     }
   }, {
     sequelize,
-    modelName: 'Listing'
+    modelName: 'Property'
   })
 
-  return Listing
+  return Property
 }
 
-export default Listing
+export default Property

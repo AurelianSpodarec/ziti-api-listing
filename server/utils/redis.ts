@@ -45,5 +45,5 @@ export interface CustomStore {
 
 export const cacheStore: CustomStore = {
   client: redisClient,
-  prefix: 'listingCache:'
+  prefix: 'propertyCache:'
 }

@@ -1,4 +1,4 @@
-// server/api/listings/routes/locationRoutes.ts
+// server/api/properties/routes/locationRoutes.ts
 
 import { type Request, type Response, Router, type NextFunction } from 'express'
 import { countries, country, provinces, province, municipalities, municipality, sectors, sector } from '@api/controllers/locationsController'

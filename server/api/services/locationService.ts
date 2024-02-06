@@ -1,4 +1,4 @@
-// server/api/listings/services/locationService.ts
+// server/api/properties/services/locationService.ts
 
 import { Op } from 'sequelize'
 import Country from '../models/location/countriesModel'

@@ -1,7 +1,7 @@
-// server/api/listings/models/propertyStatusesModel.ts
+// server/api/properties/models/propertyStatusesModel.ts
 
 import { Model, DataTypes, type Sequelize } from 'sequelize'
-import type Listing from './listingModel'
+import type Property from './propertyModel'
 
 class PropertyStatus extends Model {
   declare id: number
@@ -11,11 +11,11 @@ class PropertyStatus extends Model {
 
   // Static method to define associations
   public static associate (models: {
-    Listing: typeof Listing
+    Property: typeof Property
   }): void {
-    PropertyStatus.hasMany(models.Listing, {
-      foreignKey: 'propertyTypeId', // This should match the foreign key in the Listings table
-      as: 'Listings' // An alias to access the associated Listings
+    PropertyStatus.hasMany(models.Property, {
+      foreignKey: 'propertyTypeId', // This should match the foreign key in the Properties table
+      as: 'Properties' // An alias to access the associated Properties
     })
   }
 }

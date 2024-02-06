@@ -1,12 +1,12 @@
 // server/routes.ts
 
 import express from 'express'
-import listingRoutes from '@api/routes/listingRoutes'
+import propertyRoutes from '@api/routes/propertyRoutes'
 import locationRoutes from '@api/routes/locationRoutes'
 
 const router = express.Router()
 
-router.use('/listings', listingRoutes)
+router.use('/properties', propertyRoutes)
 router.use('/locations', locationRoutes)
 
 // Default route
