@@ -1,9 +1,9 @@
 // server/api/properties/controllers/index.ts
 
-import { property, properties, createProperty } from './propertiesController'
+import { getProperty, getProperties, postProperty } from './propertiesController'
 
 export default {
-  property,
-  properties,
-  createProperty
+  getProperty,
+  getProperties,
+  postProperty
 }
