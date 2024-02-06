@@ -89,7 +89,7 @@ export async function getListing (id: string): Promise<{ Listing: Listing | null
       }
     })
 
-    if (listing === null) {
+    if (listing === null || listing === undefined) {
       console.log(
         '\x1b[31m%s\x1b[0m',
         'Post not found, returning null'

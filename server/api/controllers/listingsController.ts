@@ -26,6 +26,7 @@ const ParamsSchema = z.object({
 export async function listing (req: Request, res: Response): Promise<void> {
   try {
     const { id } = ParamsSchema.parse(req.params)
+    console.log('chill son')
     const result = await getListing(id)
     console.log('\x1b[32m200 OK. Sending listing data.\x1b[0m')
     res.json(result.Listing)
