@@ -1,4 +1,4 @@
-// server/api/listings/models/location/countriesModel.ts
+// server/api/properties/models/location/countriesModel.ts
 
 import { Model, DataTypes, type Sequelize } from 'sequelize'
 import type Province from './provincesModel'

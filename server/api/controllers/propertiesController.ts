@@ -1,21 +1,21 @@
-// server/api/listings/controllers/listingsController.tsx
+// server/api/properties/controllers/propertiesController.tsx
 
 import { type Request, type Response } from 'express'
 import { type UniqueConstraintError } from 'sequelize'
 import { z } from 'zod'
-import { listListings, getListing, createListing } from '../services/listingService'
-import type Listing from '../models/listingModel'
+import * as propertyService from '../services/propertyService'
+import type Property from '../models/propertyModel'
 
-export async function listings (req: Request, res: Response): Promise<void> {
+export async function getProperties (req: Request, res: Response): Promise<void> {
   try {
-    // Get a list of listings
-    const result = await listListings()
-    console.log('\x1b[32m200 OK. Sending listings data.\x1b[0m')
+    // Get a list of properties
+    const result = await propertyService.getProperties()
+    console.log('\x1b[32m200 OK. Sending properties data.\x1b[0m')
     res.json(result)
   } catch (e) {
     const error = e as Error
     console.error(error.message)
-    res.status(500).send({ error: 'Problem fetching listings.' })
+    res.status(500).send({ error: 'Problem fetching properties.' })
   }
 }
 
@@ -26,17 +26,17 @@ const ParamsSchema = z.object({
     .regex(uuidRegex, 'ID must be a valid UUID.')
 })
 
-export async function listing (req: Request, res: Response): Promise<void> {
+export async function getProperty (req: Request, res: Response): Promise<void> {
   try {
     const { id } = ParamsSchema.parse(req.params)
-    const result = await getListing(id)
-    if (result.Listing === null) {
+    const result = await propertyService.getProperty(id)
+    if (result.Property === null) {
       console.error('\x1b[31m404 Not Found.')
       res.status(404).json({ error: 'Not Found' })
       return
     }
-    console.log('\x1b[32m200 OK. Sending listing data.\x1b[0m')
-    res.json(result.Listing)
+    console.log('\x1b[32m200 OK. Sending property data.\x1b[0m')
+    res.json(result.Property)
   } catch (e) {
     if (e instanceof z.ZodError) {
       console.error('\x1b[31m400 Bad Request. Validation error:', e.errors[0].message, '\x1b[0m')
@@ -44,7 +44,7 @@ export async function listing (req: Request, res: Response): Promise<void> {
     } else {
       const error = e as Error
       console.error(error.message)
-      res.status(500).send({ error: 'Problem fetching listing.' })
+      res.status(500).send({ error: 'Problem fetching property.' })
     }
   }
 }
@@ -54,7 +54,7 @@ const dateStringSchema = z.union([
   z.null()
 ])
 
-const ListingSchema = z.object({
+const PropertySchema = z.object({
   title: z.string().min(1, 'Title is required.'),
   description: z.string().min(1, 'Description is required.'),
   address: z.string().min(1, 'Address is required.'),
@@ -74,12 +74,12 @@ const ListingSchema = z.object({
   sectorId: z.number().nonnegative('Sector ID must be a non-negative number.')
 })
 
-export async function createListings (req: Request, res: Response): Promise<void> {
+export async function postProperty (req: Request, res: Response): Promise<void> {
   try {
-    const listingData = ListingSchema.parse(req.body)
-    const newListing = await createListing(listingData as Listing)
-    console.log('\x1b[32m201 CREATED. Sending new listing data.\x1b[0m')
-    res.status(201).json(newListing)
+    const propertyData = PropertySchema.parse(req.body)
+    const newProperty = await propertyService.postProperty(propertyData as Property)
+    console.log('\x1b[32m201 CREATED. Sending new property data.\x1b[0m')
+    res.status(201).json(newProperty)
   } catch (e) {
     const error = e as UniqueConstraintError
     console.error(error.message)
@@ -88,7 +88,7 @@ export async function createListings (req: Request, res: Response): Promise<void
       const specificError = error.errors?.[0]?.message !== undefined && error.errors?.[0]?.message !== '' ? error.errors?.[0]?.message : 'Unique constraint error'
       res.status(409).send({ error: specificError })
     } else {
-      res.status(500).send({ error: 'Problem creating listing.' })
+      res.status(500).send({ error: 'Problem creating property.' })
     }
   }
 }

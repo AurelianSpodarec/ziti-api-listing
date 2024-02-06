@@ -1,7 +1,7 @@
-// server/api/listings/models/locations/currenciesModel.ts
+// server/api/properties/models/locations/currenciesModel.ts
 
 import { Model, DataTypes, type Sequelize } from 'sequelize'
-import type Listing from '../listingModel'
+import type Property from '../propertyModel'
 
 class Currency extends Model {
   declare id: number
@@ -11,11 +11,11 @@ class Currency extends Model {
 
   // Static method to define associations
   public static associate (models: {
-    Listing: typeof Listing
+    Property: typeof Property
   }): void {
-    Currency.hasMany(models.Listing, {
+    Currency.hasMany(models.Property, {
       foreignKey: 'currencyId',
-      as: 'Listings'
+      as: 'Properties'
     })
   }
 }

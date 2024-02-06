@@ -1,6 +1,6 @@
-// server/api/listings/services/listingService.ts
+// server/api/properties/services/propertyService.ts
 
-import Listing from '@api/models/listingModel'
+import Property from '@api/models/propertyModel'
 import PropertyStatus from '@api/models/propertyStatusesModel'
 import PropertyType from '@api/models/propertyTypesModel'
 import Sector from '@api/models/location/sectorsModel'
@@ -9,10 +9,10 @@ import Municipality from '@api/models/location/municipalitiesModel'
 import Province from '@api/models/location/provincesModel'
 import Country from '@api/models/location/countriesModel'
 
-export async function listListings (): Promise<{ Listings: Listing[], SchemaData: Record<string, any> }> {
+export async function getProperties (): Promise<{ Properties: Property[], SchemaData: Record<string, any> }> {
   try {
-    // Query the database for listings with related information
-    const listings = await Listing.findAll({
+    // Query the database for properties with related information
+    const properties = await Property.findAll({
       include: [
         { model: Currency, as: 'Currency', attributes: ['id', 'code', 'name', 'symbol'] },
         { model: PropertyStatus, as: 'PropertyStatus' },
@@ -44,20 +44,20 @@ export async function listListings (): Promise<{ Listings: Listing[], SchemaData
     })
 
     // Generate the SchemaData object using the external function
-    // const schemaData = generateSchemaData(listings, organization);
+    // const schemaData = generateSchemaData(properties, organization);
     const schemaData = {}
 
-    return { Listings: listings, SchemaData: schemaData }
+    return { Properties: properties, SchemaData: schemaData }
   } catch (error) {
-    console.error('Error fetching listings from the database:', error)
+    console.error('Error fetching properties from the database:', error)
     throw error
   }
 }
 
-export async function getListing (id: string): Promise<{ Listing: Listing | null }> {
+export async function getProperty (id: string): Promise<{ Property: Property | null }> {
   try {
-    // Query the database for the listing
-    const listing = await Listing.findOne({
+    // Query the database for the property
+    const property = await Property.findOne({
       include: [
         { model: Currency, as: 'Currency', attributes: ['id', 'code', 'name', 'symbol'] },
         { model: PropertyStatus, as: 'PropertyStatus' },
@@ -89,23 +89,23 @@ export async function getListing (id: string): Promise<{ Listing: Listing | null
       }
     })
 
-    if (listing === null) {
-      return { Listing: null } // Return null when listing is not found
+    if (property === null) {
+      return { Property: null } // Return null when property is not found
     }
 
-    return { Listing: listing }
+    return { Property: property }
   } catch (error) {
-    console.error('Error fetching listing from the database:', error)
+    console.error('Error fetching property from the database:', error)
     throw error
   }
 }
 
-export async function createListing (listingData: Listing): Promise<Listing> {
+export async function postProperty (propertyData: Property): Promise<Property> {
   try {
-    const newListing = await Listing.create(listingData)
-    return newListing
+    const newProperty = await Property.create(propertyData)
+    return newProperty
   } catch (error) {
-    console.error('Error creating listing:', error)
+    console.error('Error creating property:', error)
     throw error
   }
 }

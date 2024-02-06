@@ -1,9 +1,9 @@
-// server/api/listings/controllers/index.ts
+// server/api/properties/controllers/index.ts
 
-import { listing, listings, createListings } from './listingsController'
+import { property, properties, createProperty } from './propertiesController'
 
 export default {
-  listing,
-  listings,
-  createListings
+  property,
+  properties,
+  createProperty
 }
