@@ -36,6 +36,11 @@ export async function listing (req: Request, res: Response): Promise<void> {
   }
 }
 
+const dateStringSchema = z.union([
+  z.string().transform((str) => new Date(str)),
+  z.null()
+])
+
 const ListingSchema = z.object({
   title: z.string().min(1, 'Title is required.'),
   description: z.string().min(1, 'Description is required.'),
@@ -47,14 +52,8 @@ const ListingSchema = z.object({
   backyard: z.boolean().refine(val => typeof val === 'boolean', 'Backyard must be a boolean.'),
   pool: z.boolean().refine(val => typeof val === 'boolean', 'Pool must be a boolean.'),
   jacuzzi: z.boolean().refine(val => typeof val === 'boolean', 'Jacuzzi must be a boolean.'),
-  availabilityDate: z.union([z.date(), z.null()])
-    .optional()
-    .transform((val) => val !== null && val !== undefined ? new Date(val) : val)
-    .refine(val => val !== undefined, 'Availability date must be a date or null.'),
-  constructionYear: z.union([z.date(), z.null()])
-    .optional()
-    .transform((val) => val !== null && val !== undefined ? new Date(val) : val)
-    .refine(val => val !== undefined, 'Construction year must be a date or null.'),
+  availabilityDate: dateStringSchema.optional().refine(val => val !== undefined, 'Availability date must be a date or null.'),
+  constructionYear: dateStringSchema.optional().refine(val => val !== undefined, 'Construction year must be a date or null.'),
   price: z.number().nonnegative('Price must be a non-negative number.'),
   published: z.boolean().refine(val => typeof val === 'boolean', 'Published must be a boolean.'),
   reported: z.boolean().refine(val => typeof val === 'boolean', 'Reported must be a boolean.'),
@@ -66,6 +65,7 @@ export async function createListings (req: Request, res: Response): Promise<void
   try {
     const listingData = ListingSchema.parse(req.body)
     const newListing = await createListing(listingData as Listing)
+    console.log('\x1b[32m201 CREATED. Sending new listing data.\x1b[0m')
     res.status(201).json(newListing)
   } catch (e) {
     const error = e as UniqueConstraintError
