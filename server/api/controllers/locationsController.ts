@@ -110,6 +110,13 @@ export async function province (req: Request, res: Response): Promise<void> {
     const id: number = params.id
 
     const result = await getProvince(id)
+
+    if (result.Province === null) {
+      console.log('\x1b[31m404 Not Found.\x1b[0m')
+      res.status(404).send({ error: 'Not Found' })
+      return
+    }
+
     console.log('\x1b[32m200 OK. Sending province data.\x1b[0m')
     res.json(result.Province)
   } catch (e) {
@@ -177,6 +184,13 @@ export async function municipality (req: Request, res: Response): Promise<void> 
     const id: number = params.id
 
     const result = await getMunicipality(id)
+
+    if (result.Municipality === null) {
+      console.log('\x1b[31m404 Not Found.\x1b[0m')
+      res.status(404).send({ error: 'Not Found' })
+      return
+    }
+
     console.log('\x1b[32m200 OK. Sending municipality data.\x1b[0m')
     res.json(result.Municipality)
   } catch (e) {
@@ -193,7 +207,10 @@ const sectorsQuerySchema = z.object({
     .refine(val => !isNaN(val), 'Municipality ID must be a number')
     .refine(val => Number.isInteger(val), 'Municipality ID must be an integer')
     .refine(val => val >= INT_MIN && val <= INT_MAX, 'Municipality ID must be within integer range').optional(),
-  s: z.string().optional()
+  s: z.string()
+    .regex(/^[a-zA-Z0-9 ]*$/, 'Only alphanumeric characters and spaces are allowed')
+    .max(30, 'The string must be at most 30 characters long')
+    .optional()
 })
 
 export async function sectors (req: Request, res: Response): Promise<void> {
@@ -251,6 +268,13 @@ export async function sector (req: Request, res: Response): Promise<void> {
     const id: number = params.id
 
     const result = await getSector(id)
+
+    if (result.Sector === null) {
+      console.log('\x1b[31m404 Not Found.\x1b[0m')
+      res.status(404).send({ error: 'Not Found' })
+      return
+    }
+
     console.log('\x1b[32m200 OK. Sending sector data.\x1b[0m')
     res.json(result.Sector)
   } catch (e) {
