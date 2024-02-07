@@ -27,7 +27,7 @@ export async function getCountries (): Promise<{ Countries: Country[] | null }> 
   }
 }
 
-export async function getCountry (id: string): Promise<{ Country: Country | null }> {
+export async function getCountry (id: number): Promise<{ Country: Country | null }> {
   try {
     const country = await Country.findOne({
       attributes: ['id', 'name'],
@@ -52,7 +52,7 @@ export async function getCountry (id: string): Promise<{ Country: Country | null
   }
 }
 
-export async function getProvinces (countryId: string): Promise<{ Provinces: Province[] | null }> {
+export async function getProvinces (countryId: number): Promise<{ Provinces: Province[] | null }> {
   try {
     const provinces = await Province.findAll({
       attributes: ['id', 'name'],
@@ -79,7 +79,7 @@ export async function getProvinces (countryId: string): Promise<{ Provinces: Pro
   }
 }
 
-export async function getProvince (id: string): Promise<{ Province: Province | null }> {
+export async function getProvince (id: number): Promise<{ Province: Province | null }> {
   try {
     const province = await Province.findOne({
       attributes: ['id', 'name'],
@@ -106,7 +106,7 @@ export async function getProvince (id: string): Promise<{ Province: Province | n
   }
 }
 
-export async function getMunicipalities (provinceId: string): Promise<{ Municipalities: Municipality[] | null }> {
+export async function getMunicipalities (provinceId: number): Promise<{ Municipalities: Municipality[] | null }> {
   try {
     const municipalities = await Municipality.findAll({
       attributes: ['id', 'name'],
@@ -140,7 +140,7 @@ export async function getMunicipalities (provinceId: string): Promise<{ Municipa
   }
 }
 
-export async function getMunicipality (id: string): Promise<{ Municipality: { id: number, name: string } | null }> {
+export async function getMunicipality (id: number): Promise<{ Municipality: { id: number, name: string } | null }> {
   try {
     const municipality = await Municipality.findOne({
       attributes: ['id', 'name'],
@@ -173,7 +173,7 @@ export async function getMunicipality (id: string): Promise<{ Municipality: { id
   }
 }
 
-export async function getSectors (municipalityId: string): Promise<{ Sectors: Array<{ sector_id: string, sector: string, municipalityId: string, municipality: string, provinceId: string, province: string }> } | { Sectors: null }> {
+export async function getSectors (municipalityId: number): Promise<{ Sectors: Array<{ sector_id: string, sector: string, municipalityId: string, municipality: string, provinceId: string, province: string }> } | { Sectors: null }> {
   try {
     const sectors = await Sector.findAll({
       attributes: ['id', 'name'],
@@ -222,7 +222,7 @@ export async function getSectors (municipalityId: string): Promise<{ Sectors: Ar
   }
 }
 
-export async function getSector (id: string): Promise<{ Sector: { sector_id: string, sector: string, municipalityId: string, municipality: string, provinceId: string, province: string } | null }> {
+export async function getSector (id: number): Promise<{ Sector: { sector_id: string, sector: string, municipalityId: string, municipality: string, provinceId: string, province: string } | null }> {
   try {
     const sector = await Sector.findOne({
       attributes: ['id', 'name'],
