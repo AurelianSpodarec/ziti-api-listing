@@ -74,7 +74,7 @@ listingDB.sequelizeProperty
   })
 
 // Routes
-server.use(routes)
+server.use('/api/v1', routes)
 
 // 404 logging
 server.use(handle404)
