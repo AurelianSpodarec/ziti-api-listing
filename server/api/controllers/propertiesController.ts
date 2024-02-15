@@ -4,7 +4,6 @@ import { type Request, type Response } from 'express'
 import { type UniqueConstraintError } from 'sequelize'
 import { z } from 'zod'
 import * as propertyService from '../services/propertyService'
-import type Property from '../models/propertyModel'
 
 export async function getProperties (req: Request, res: Response): Promise<void> {
   try {
@@ -71,13 +70,14 @@ const PropertySchema = z.object({
   published: z.boolean().refine(val => typeof val === 'boolean', 'Published must be a boolean.'),
   reported: z.boolean().refine(val => typeof val === 'boolean', 'Reported must be a boolean.'),
   disabled: z.boolean().refine(val => typeof val === 'boolean', 'Disabled must be a boolean.'),
-  sectorId: z.number().nonnegative('Sector ID must be a non-negative number.')
+  sectorId: z.number().nonnegative('Sector ID must be a non-negative number.'),
+  listingOwnerId: z.string().regex(uuidRegex, 'Listing Owner ID must be a valid UUID.')
 })
 
 export async function postProperty (req: Request, res: Response): Promise<void> {
   try {
     const propertyData = PropertySchema.parse(req.body)
-    const newProperty = await propertyService.postProperty(propertyData as Property)
+    const newProperty = await propertyService.postProperty(propertyData as propertyService.PropertyInput)
     console.log('\x1b[32m201 CREATED. Sending new property data.\x1b[0m')
     res.status(201).json(newProperty)
   } catch (e) {

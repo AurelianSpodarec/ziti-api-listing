@@ -100,7 +100,28 @@ export async function getProperty (id: string): Promise<{ Property: Property | n
   }
 }
 
-export async function postProperty (propertyData: Property): Promise<Property> {
+// Define a type that matches the input fields for creating a property
+export interface PropertyInput {
+  title: string
+  description: string
+  address: string
+  squareFeet?: number | null
+  bedrooms: number
+  bathrooms: number
+  parking: number
+  backyard: boolean
+  pool: boolean
+  jacuzzi: boolean
+  availabilityDate?: Date | null
+  constructionYear?: Date | null
+  price: number
+  published: boolean
+  disabled?: boolean
+  sectorId: number
+  listingOwnerId: string
+}
+
+export async function postProperty (propertyData: PropertyInput): Promise<Property> {
   try {
     const newProperty = await Property.create(propertyData)
     return newProperty

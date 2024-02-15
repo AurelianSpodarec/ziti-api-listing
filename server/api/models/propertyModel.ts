@@ -26,9 +26,11 @@ import type PropertyType from '@api/models/propertyTypesModel'
 import type PropertyStatus from '@api/models/propertyStatusesModel'
 import type Currency from '@api/models/location/currenciesModel'
 import type Sector from '@api/models/location/sectorsModel'
+import type FavoriteProperty from './favoritePropertyModel'
+import type ReportedListing from './reportedListingsModel'
 
 class Property extends Model<InferAttributes<Property>, InferCreationAttributes<Property>> {
-  declare id: string
+  declare id?: string
   declare title: string
   declare description: string
   declare address: string
@@ -43,9 +45,9 @@ class Property extends Model<InferAttributes<Property>, InferCreationAttributes<
   declare constructionYear: Date | null
   declare price: number
   declare published: boolean
-  declare reported: boolean
-  declare disabled: boolean
+  declare disabled?: boolean
   declare sectorId: number
+  declare listingOwnerId: string
 
   // timestamps!
   declare readonly createdAt?: CreationOptional<Date>
@@ -99,16 +101,36 @@ class Property extends Model<InferAttributes<Property>, InferCreationAttributes<
   declare countSectors: HasManyCountAssociationsMixin
   declare createSector: HasManyCreateAssociationMixin<Sector>
 
+  // Add association methods for FavoriteProperty
+  declare getFavoriteProperties: HasManyGetAssociationsMixin<FavoriteProperty>
+  declare addFavoriteProperty: HasManyAddAssociationMixin<FavoriteProperty, string>
+  declare removeFavoriteProperty: HasManyRemoveAssociationMixin<FavoriteProperty, string>
+  declare hasFavoriteProperty: HasManyHasAssociationMixin<FavoriteProperty, string>
+  declare countFavoriteProperties: HasManyCountAssociationsMixin
+
+  // Add this method to declare association methods for Reported Listings
+  declare getReportsMade: HasManyGetAssociationsMixin<ReportedListing>
+  declare addReportMade: HasManyAddAssociationMixin<ReportedListing, string>
+  declare setReportsMade: HasManySetAssociationsMixin<ReportedListing, string>
+  declare removeReportMade: HasManyRemoveAssociationMixin<ReportedListing, string>
+  declare hasReportsMade: HasManyHasAssociationMixin<ReportedListing, string>
+  declare countReportsMade: HasManyCountAssociationsMixin
+  declare createReportMade: HasManyCreateAssociationMixin<ReportedListing>
+
   public PropertyTypes?: PropertyType[]
   public PropertyStatuses?: PropertyStatus[]
   public Currencies?: Currency[]
   public Sectors?: Sector[]
+  public FavoriteProperties?: FavoriteProperty[]
+  public ReportedProperties?: ReportedListing[]
 
   declare static associations: {
     PropertyTypes: Association<Property, PropertyType>
     PropertyStatuses: Association<Property, PropertyStatus>
     Currencies: Association<Property, Currency>
     Sectors: Association<Property, Sector>
+    FavoriteProperties: Association<Property, FavoriteProperty>
+    ReportedProperties: Association<Property, ReportedListing>
   }
 
   public static associate (models: {
@@ -116,11 +138,15 @@ class Property extends Model<InferAttributes<Property>, InferCreationAttributes<
     PropertyStatus: typeof PropertyStatus
     Currency: typeof Currency
     Sector: typeof Sector
+    FavoriteProperty: typeof FavoriteProperty
+    ReportedListing: typeof ReportedListing
   }): void {
     Property.belongsTo(models.PropertyType, { foreignKey: 'propertyTypeId' })
     Property.belongsTo(models.PropertyStatus, { foreignKey: 'propertyStatusId' })
     Property.belongsTo(models.Currency, { foreignKey: 'currencyId' })
     Property.belongsTo(models.Sector, { foreignKey: 'sectorId' })
+    Property.hasMany(models.FavoriteProperty, { foreignKey: 'propertyId', as: 'favoriteProperties' })
+    Property.hasMany(models.ReportedListing, { foreignKey: 'listingId', as: 'reportedListings' })
   }
 }
 
@@ -189,16 +215,16 @@ export const initProperty = (sequelize: Sequelize): typeof Property => {
       type: DataTypes.BOOLEAN,
       defaultValue: false
     },
-    reported: { // Maybe we need a properties_reported table to map properties and users who have reported them
-      type: DataTypes.BOOLEAN,
-      defaultValue: false
-    },
     disabled: {
       type: DataTypes.BOOLEAN,
       defaultValue: false
     },
     sectorId: {
       type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    listingOwnerId: {
+      type: DataTypes.STRING,
       allowNull: false
     }
   }, {
