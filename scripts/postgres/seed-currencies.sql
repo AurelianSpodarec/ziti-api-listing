@@ -1,3 +1,22 @@
 INSERT INTO "Currencies" ("code", "name", "symbol", "createdAt", "updatedAt") VALUES
+('AUD', 'Australian Dollar', 'A$', NOW(), NOW()),
+('BRL', 'Brazilian Real', 'R$', NOW(), NOW()),
+('CAD', 'Canadian Dollar', 'C$', NOW(), NOW()),
+('CHF', 'Swiss Franc', 'CHF', NOW(), NOW()),
+('CNY', 'Chinese Yuan', '¥', NOW(), NOW()),
+('DKK', 'Danish Krone', 'kr', NOW(), NOW()),
 ('DOP', 'Dominican Peso', 'RD$', NOW(), NOW()),
+('EUR', 'Euro', '€', NOW(), NOW()),
+('GBP', 'British Pound', '£', NOW(), NOW()),
+('HKD', 'Hong Kong Dollar', 'HK$', NOW(), NOW()),
+('INR', 'Indian Rupee', '₹', NOW(), NOW()),
+('JPY', 'Japanese Yen', '¥', NOW(), NOW()),
+('KRW', 'South Korean Won', '₩', NOW(), NOW()),
+('MXN', 'Mexican Peso', '$', NOW(), NOW()),
+('NOK', 'Norwegian Krone', 'kr', NOW(), NOW()),
+('NZD', 'New Zealand Dollar', 'NZ$', NOW(), NOW()),
+('SEK', 'Swedish Krona', 'kr', NOW(), NOW()),
+('SGD', 'Singapore Dollar', 'S$', NOW(), NOW()),
+('TWD', 'New Taiwan Dollar', 'NT$', NOW(), NOW()),
 ('USD', 'US Dollar', '$', NOW(), NOW());
+
