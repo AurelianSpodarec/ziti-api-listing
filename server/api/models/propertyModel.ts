@@ -26,6 +26,7 @@ import type PropertyType from '@api/models/propertyTypesModel'
 import type PropertyStatus from '@api/models/propertyStatusesModel'
 import type Currency from '@api/models/location/currenciesModel'
 import type Sector from '@api/models/location/sectorsModel'
+import type Image from './imageModel'
 import type FavoriteProperty from './favoritePropertyModel'
 import type ReportedListing from './reportedListingsModel'
 
@@ -101,14 +102,14 @@ class Property extends Model<InferAttributes<Property>, InferCreationAttributes<
   declare countSectors: HasManyCountAssociationsMixin
   declare createSector: HasManyCreateAssociationMixin<Sector>
 
-  // Add association methods for FavoriteProperty
+  // FavoriteProperty associations
   declare getFavoriteProperties: HasManyGetAssociationsMixin<FavoriteProperty>
   declare addFavoriteProperty: HasManyAddAssociationMixin<FavoriteProperty, string>
   declare removeFavoriteProperty: HasManyRemoveAssociationMixin<FavoriteProperty, string>
   declare hasFavoriteProperty: HasManyHasAssociationMixin<FavoriteProperty, string>
   declare countFavoriteProperties: HasManyCountAssociationsMixin
 
-  // Add this method to declare association methods for Reported Listings
+  // ReportedListing associations
   declare getReportsMade: HasManyGetAssociationsMixin<ReportedListing>
   declare addReportMade: HasManyAddAssociationMixin<ReportedListing, string>
   declare setReportsMade: HasManySetAssociationsMixin<ReportedListing, string>
@@ -116,6 +117,12 @@ class Property extends Model<InferAttributes<Property>, InferCreationAttributes<
   declare hasReportsMade: HasManyHasAssociationMixin<ReportedListing, string>
   declare countReportsMade: HasManyCountAssociationsMixin
   declare createReportMade: HasManyCreateAssociationMixin<ReportedListing>
+
+  // Image associations
+  declare getImages: HasManyGetAssociationsMixin<Image>
+  declare addImage: HasManyAddAssociationMixin<Image, string>
+  declare removeImage: HasManyRemoveAssociationMixin<Image, string>
+  declare createImage: HasManyCreateAssociationMixin<Image>
 
   public PropertyTypes?: PropertyType[]
   public PropertyStatuses?: PropertyStatus[]
@@ -129,6 +136,7 @@ class Property extends Model<InferAttributes<Property>, InferCreationAttributes<
     PropertyStatuses: Association<Property, PropertyStatus>
     Currencies: Association<Property, Currency>
     Sectors: Association<Property, Sector>
+    Images: Association<Property, Image>
     FavoriteProperties: Association<Property, FavoriteProperty>
     ReportedProperties: Association<Property, ReportedListing>
   }
@@ -138,6 +146,7 @@ class Property extends Model<InferAttributes<Property>, InferCreationAttributes<
     PropertyStatus: typeof PropertyStatus
     Currency: typeof Currency
     Sector: typeof Sector
+    Image: typeof Image
     FavoriteProperty: typeof FavoriteProperty
     ReportedListing: typeof ReportedListing
   }): void {
@@ -145,6 +154,7 @@ class Property extends Model<InferAttributes<Property>, InferCreationAttributes<
     Property.belongsTo(models.PropertyStatus, { foreignKey: 'propertyStatusId' })
     Property.belongsTo(models.Currency, { foreignKey: 'currencyId' })
     Property.belongsTo(models.Sector, { foreignKey: 'sectorId' })
+    Property.hasMany(models.Image, { foreignKey: 'propertyId', as: 'images' })
     Property.hasMany(models.FavoriteProperty, { foreignKey: 'propertyId', as: 'favoriteProperties' })
     Property.hasMany(models.ReportedListing, { foreignKey: 'listingId', as: 'reportedListings' })
   }
