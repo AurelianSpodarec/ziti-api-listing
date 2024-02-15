@@ -12,6 +12,9 @@ import { initCountry } from '@api/models/location/countriesModel'
 import { initProvince } from '@api/models/location/provincesModel'
 import { initMunicipality } from '@api/models/location/municipalitiesModel'
 import { initSector } from '@api/models/location/sectorsModel'
+import { initFavoriteCollection } from '@api/models/favoriteCollectionModel'
+import { initFavoriteProperty } from '@api/models/favoritePropertyModel'
+import { initReportedListing } from '@api/models/reportedListingsModel'
 
 // Initialize Sequelize instance
 const sequelizeProperty = new Sequelize(
@@ -42,6 +45,9 @@ const PropertyStatus = initPropertyStatus(sequelizeProperty)
 const PropertyType = initPropertyType(sequelizeProperty)
 const Currency = initCurrency(sequelizeProperty)
 const Property = initProperty(sequelizeProperty)
+const FavoriteCollection = initFavoriteCollection(sequelizeProperty)
+const FavoriteProperty = initFavoriteProperty(sequelizeProperty)
+const ReportedListing = initReportedListing(sequelizeProperty)
 
 // Define associations (order is important)
 // Country, Province, Municipality, Sector
@@ -53,8 +59,14 @@ Sector.associate({ Municipality })
 PropertyStatus.associate({ Property })
 PropertyType.associate({ Property })
 Currency.associate({ Property })
+// Favorite Collection
+FavoriteCollection.associate({ FavoriteProperty })
+// Favorite Property
+FavoriteProperty.associate({ FavoriteCollection, Property })
+// Reported Listing
+ReportedListing.associate({ Property })
 // Property
-Property.associate({ PropertyStatus, PropertyType, Currency, Sector })
+Property.associate({ PropertyStatus, PropertyType, Currency, Sector, FavoriteProperty, ReportedListing })
 
 // Initialize the db object
 const listingDB: any = {
@@ -67,7 +79,10 @@ const listingDB: any = {
   PropertyStatus,
   PropertyType,
   Currency,
-  Property
+  Property,
+  FavoriteCollection,
+  FavoriteProperty,
+  ReportedListing
 }
 
 export default listingDB
