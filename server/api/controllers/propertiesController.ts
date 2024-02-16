@@ -1,6 +1,7 @@
 // server/api/properties/controllers/propertiesController.tsx
 
 import { type Request, type Response } from 'express'
+import { type AuthenticatedRequest } from '../../types/authenticatedRequest'
 import { type UniqueConstraintError } from 'sequelize'
 import { z } from 'zod'
 import * as propertyService from '../services/propertyService'
@@ -74,7 +75,7 @@ const PropertySchema = z.object({
   listingOwnerId: z.string().regex(uuidRegex, 'Listing Owner ID must be a valid UUID.')
 })
 
-export async function postProperty (req: Request, res: Response): Promise<void> {
+export async function postProperty (req: AuthenticatedRequest, res: Response): Promise<void> {
   try {
     const propertyData = PropertySchema.parse(req.body)
     const newProperty = await propertyService.postProperty(propertyData as propertyService.PropertyInput)
@@ -89,6 +90,50 @@ export async function postProperty (req: Request, res: Response): Promise<void> 
       res.status(409).send({ error: specificError })
     } else {
       res.status(500).send({ error: 'Problem creating property.' })
+    }
+  }
+}
+
+const ReportSchema = z.object({
+  reason: z.string().min(1, 'Reason is required.'),
+  details: z.string().optional()
+})
+
+export async function postReportListing (req: AuthenticatedRequest, res: Response): Promise<void> {
+  try {
+    if (req.decodedToken === undefined) {
+      console.log('\x1b[31m401 Unauthorized. Invalid token.\x1b[0m')
+      res.status(401).json({ message: 'Invalid token.' })
+      return
+    }
+
+    // Extract the user ID from the decoded token and validate listingId
+    const reporterUserId = req.decodedToken.id
+    const { id: listingId } = ParamsSchema.parse({ id: req.params.id })
+
+    // Validate the report body
+    const reportBody = ReportSchema.parse(req.body)
+
+    // Construct the report data with all necessary fields
+    const reportData = {
+      listingId,
+      reporterUserId,
+      ...reportBody
+    }
+
+    const newReport = await propertyService.postReportListing(reportData as propertyService.ReportInput)
+    console.log('\x1b[32m201 CREATED. Listing has been reported.\x1b[0m')
+    res.status(201).json(newReport)
+  } catch (e) {
+    // Error handling remains unchanged
+    const error = e as UniqueConstraintError
+    console.error(error.message)
+
+    if (error.name === 'SequelizeUniqueConstraintError') {
+      const specificError = error.errors?.[0]?.message !== undefined && error.errors?.[0]?.message !== '' ? error.errors?.[0]?.message : 'Unique constraint error'
+      res.status(409).send({ error: specificError })
+    } else {
+      res.status(500).send({ error: 'Problem reporting listing.' })
     }
   }
 }

@@ -1,7 +1,7 @@
 // server/api/properties/routes/propertyRoutes.ts
 
 import { type Request, type Response, Router, type NextFunction } from 'express'
-import { getProperties, getProperty, postProperty } from '../controllers/propertiesController'
+import { getProperties, getProperty, postProperty, postReportListing } from '../controllers/propertiesController'
 import { asyncMiddleware } from '@utils/asyncMiddleware'
 import { cacheMiddleware } from '@middleware/cacheMiddleware'
 import { cacheStore } from '@utils/redis'
@@ -22,6 +22,11 @@ propertyRoutes.post('/', verifyJWT, (req: Request, res: Response, next: NextFunc
 // Get single property by ID
 propertyRoutes.get('/:id', asyncMiddleware(cacheMiddleware(cacheStore)), (req: Request, res: Response, next: NextFunction) => {
   getProperty(req, res).catch(next)
+})
+
+// Report an inappropiate listing
+propertyRoutes.post('/:id/report', verifyJWT, (req: Request, res: Response, next: NextFunction) => {
+  postReportListing(req, res).catch(next)
 })
 
 export default propertyRoutes
