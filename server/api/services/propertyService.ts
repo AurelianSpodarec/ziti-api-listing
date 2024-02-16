@@ -8,6 +8,7 @@ import Currency from '@api/models/location/currenciesModel'
 import Municipality from '@api/models/location/municipalitiesModel'
 import Province from '@api/models/location/provincesModel'
 import Country from '@api/models/location/countriesModel'
+import ReportedListing from '@api/models/reportedListingsModel'
 
 export async function getProperties (): Promise<{ Properties: Property[], SchemaData: Record<string, any> }> {
   try {
@@ -147,10 +148,8 @@ export async function postReportListing (reportData: ReportInput): Promise<boole
       return false // Or handle as appropriate
     }
 
-    const property: Property = propertyInstance
-
     // Use the instance method to create the report
-    await property.createReportMade({
+    await ReportedListing.create({
       listingId: reportData.listingId,
       reporterUserId: reportData.reporterUserId,
       reason: reportData.reason,
