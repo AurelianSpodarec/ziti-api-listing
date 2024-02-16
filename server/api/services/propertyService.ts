@@ -130,3 +130,35 @@ export async function postProperty (propertyData: PropertyInput): Promise<Proper
     throw error
   }
 }
+
+export interface ReportInput {
+  listingId: string
+  reporterUserId: string
+  reason: string
+  details?: string
+}
+
+export async function postReportListing (reportData: ReportInput): Promise<boolean> {
+  try {
+    // Retrieve the property instance
+    const propertyInstance = await Property.findByPk(reportData.listingId)
+    if (propertyInstance === null) {
+      console.error('Property not found')
+      return false // Or handle as appropriate
+    }
+
+    // Use the instance method to create the report
+    await propertyInstance.createReportMade({
+      listingId: reportData.listingId,
+      reporterUserId: reportData.reporterUserId,
+      reason: reportData.reason,
+      details: reportData.details
+    })
+
+    console.log('Report created successfully')
+    return true
+  } catch (error) {
+    console.error('Error creating report:', error)
+    throw error
+  }
+}
