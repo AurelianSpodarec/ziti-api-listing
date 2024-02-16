@@ -147,8 +147,10 @@ export async function postReportListing (reportData: ReportInput): Promise<boole
       return false // Or handle as appropriate
     }
 
+    const property: Property = propertyInstance
+
     // Use the instance method to create the report
-    await propertyInstance.createReportMade({
+    await property.createReportMade({
       listingId: reportData.listingId,
       reporterUserId: reportData.reporterUserId,
       reason: reportData.reason,
