@@ -47,7 +47,13 @@ export const initReportedListing = (sequelize: Sequelize): typeof ReportedListin
     },
     listingId: {
       type: DataTypes.UUID,
-      allowNull: false
+      allowNull: false,
+      references: {
+        model: 'Properties',
+        key: 'id'
+      },
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE'
     },
     reporterUserId: {
       type: DataTypes.STRING, // Keeping as STRING to match UUID format from authDB

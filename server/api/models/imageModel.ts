@@ -9,13 +9,14 @@ import {
   type BelongsToGetAssociationMixin,
   type BelongsToSetAssociationMixin,
   type BelongsToCreateAssociationMixin,
-  type CreationOptional
+  type CreationOptional,
+  type ForeignKey
 } from 'sequelize'
 import type Property from './propertyModel'
 
 class Image extends Model<InferAttributes<Image>, InferCreationAttributes<Image>> {
   declare id: CreationOptional<string>
-  declare propertyId: string
+  declare propertyId: ForeignKey<string>
   declare url: string
   declare description: string | null
 

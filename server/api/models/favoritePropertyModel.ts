@@ -8,7 +8,8 @@ import {
   type InferCreationAttributes,
   type CreationOptional,
   type BelongsToGetAssociationMixin,
-  type BelongsToSetAssociationMixin
+  type BelongsToSetAssociationMixin,
+  type ForeignKey
 } from 'sequelize'
 import type FavoriteCollection from './favoriteCollectionModel'
 import type Property from './propertyModel'
@@ -16,7 +17,7 @@ import type Property from './propertyModel'
 class FavoriteProperty extends Model<InferAttributes<FavoriteProperty>, InferCreationAttributes<FavoriteProperty>> {
   declare id: CreationOptional<string>
   declare favoriteCollectionId: string // Reference to FavoriteCollection
-  declare propertyId: string // UUID for Property
+  declare propertyId: ForeignKey<string> // UUID for Property
 
   // timestamps!
   declare readonly createdAt?: CreationOptional<Date>
