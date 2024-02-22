@@ -39,5 +39,5 @@ RUN addgroup --system --gid 1001 nodejs && \
 # Switch to non-root user
 USER expressjs
 
-# Command to run your application
+# Command to run application
 CMD ["npm", "start"]
