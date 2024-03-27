@@ -42,6 +42,10 @@ class Property extends Model<InferAttributes<Property>, InferCreationAttributes<
   declare backyard: boolean
   declare pool: boolean
   declare jacuzzi: boolean
+  declare balcony: boolean
+  declare terrace: boolean
+  declare elevator: boolean
+  declare airConditioning: boolean
   declare availabilityDate: Date | null
   declare constructionYear: Date | null
   declare price: number
@@ -206,6 +210,22 @@ export const initProperty = (sequelize: Sequelize): typeof Property => {
       defaultValue: false
     },
     jacuzzi: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    },
+    balcony: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    },
+    terrace: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    },
+    elevator: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    },
+    airConditioning: {
       type: DataTypes.BOOLEAN,
       defaultValue: false
     },
