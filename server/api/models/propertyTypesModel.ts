@@ -28,8 +28,8 @@ export const initPropertyType = (sequelize: Sequelize): typeof PropertyType => {
       autoIncrement: true
     },
     name: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false
+      type: DataTypes.STRING,
+      allowNull: false
     }
   }, {
     sequelize,
