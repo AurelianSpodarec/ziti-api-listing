@@ -11,9 +11,9 @@ import Country from '@api/models/location/countriesModel'
 import ReportedListing from '@api/models/reportedListingsModel'
 
 export async function getProperties (propertyType?: string): Promise<{ Properties: Property[], SchemaData: Record<string, any> }> {
+  // Simplified where clause for filtering properties by published status
   const whereClause = {
-    published: true,
-    ...(propertyType !== undefined && propertyType !== '' ? { '$PropertyType.name$': propertyType } : {}) // Filter by property type if provided
+    published: true
   }
 
   try {
@@ -23,9 +23,10 @@ export async function getProperties (propertyType?: string): Promise<{ Propertie
         { model: Currency, as: 'Currency', attributes: ['id', 'code', 'name', 'symbol'] },
         { model: PropertyStatus, as: 'PropertyStatus' },
         {
+          // Correctly apply the filter within the PropertyType inclusion
           model: PropertyType,
           as: 'PropertyType',
-          where: propertyType !== undefined && propertyType !== '' ? { type: propertyType } : undefined,
+          where: propertyType !== undefined && propertyType !== '' ? { name: propertyType } : undefined,
           required: false
         },
         {
