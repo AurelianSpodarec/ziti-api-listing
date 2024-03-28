@@ -10,7 +10,12 @@ import Province from '@api/models/location/provincesModel'
 import Country from '@api/models/location/countriesModel'
 import ReportedListing from '@api/models/reportedListingsModel'
 
-export async function getProperties (): Promise<{ Properties: Property[], SchemaData: Record<string, any> }> {
+export async function getProperties (propertyType?: string): Promise<{ Properties: Property[], SchemaData: Record<string, any> }> {
+  const whereClause = {
+    published: true,
+    ...(propertyType !== undefined && propertyType !== '' ? { '$PropertyType.type$': propertyType } : {}) // Filter by property type if provided
+  }
+
   try {
     // Query the database for properties with related information
     const properties = await Property.findAll({
@@ -36,7 +41,8 @@ export async function getProperties (): Promise<{ Properties: Property[], Schema
                 attributes: ['id', 'name']
               }]
             }]
-          }]
+          }],
+          where: whereClause
         }
       ],
       where: {

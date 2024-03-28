@@ -6,10 +6,17 @@ import { type UniqueConstraintError } from 'sequelize'
 import { z } from 'zod'
 import * as propertyService from '../services/propertyService'
 
+// Define a Zod schema for the query parameters
+const QuerySchema = z.object({
+  propertyType: z.enum(['house', 'apartment']).optional()
+})
+
 export async function getProperties (req: Request, res: Response): Promise<void> {
   try {
+    const queryParams = QuerySchema.parse(req.query)
+
     // Get a list of properties
-    const result = await propertyService.getProperties()
+    const result = await propertyService.getProperties(queryParams.propertyType)
     console.log('\x1b[32m200 OK. Sending properties data.\x1b[0m')
     res.json(result)
   } catch (e) {
