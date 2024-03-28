@@ -251,7 +251,13 @@ export const initProperty = (sequelize: Sequelize): typeof Property => {
     },
     sectorId: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
+      references: {
+        model: 'Sectors',
+        key: 'id'
+      },
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
     },
     listingOwnerId: {
       type: DataTypes.STRING,
