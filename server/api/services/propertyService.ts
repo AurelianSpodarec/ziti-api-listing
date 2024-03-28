@@ -33,10 +33,10 @@ export async function getProperties (queryParams: {
   const whereClause: Record<string, any> = { published: true }
 
   // Starting with the given parameters:
-  if (queryParams.squareFeet !== null) whereClause.squareFeet = { [Op.gte]: queryParams.squareFeet }
-  if (queryParams.bedrooms !== null) whereClause.bedrooms = queryParams.bedrooms
-  if (queryParams.bathrooms !== null) whereClause.bathrooms = queryParams.bathrooms
-  if (queryParams.parking !== null) whereClause.parking = queryParams.parking
+  if (queryParams.squareFeet !== undefined) whereClause.squareFeet = { [Op.gte]: queryParams.squareFeet }
+  if (queryParams.bedrooms !== undefined) whereClause.bedrooms = queryParams.bedrooms
+  if (queryParams.bathrooms !== undefined) whereClause.bathrooms = queryParams.bathrooms
+  if (queryParams.parking !== undefined) whereClause.parking = queryParams.parking
   if (queryParams.backyard !== undefined) whereClause.backyard = queryParams.backyard
   if (queryParams.pool !== undefined) whereClause.pool = queryParams.pool
   if (queryParams.jacuzzi !== undefined) whereClause.jacuzzi = queryParams.jacuzzi
@@ -48,7 +48,7 @@ export async function getProperties (queryParams: {
   // Handling date and price filters might require more specific checks or conversions:
   if (queryParams.availabilityDate !== undefined) whereClause.availabilityDate = { [Op.gte]: new Date(queryParams.availabilityDate) }
   if (queryParams.constructionYear !== undefined) whereClause.constructionYear = { [Op.gte]: new Date(queryParams.constructionYear) }
-  if (queryParams.price !== null) whereClause.price = { [Op.lte]: queryParams.price }
+  if (queryParams.price !== undefined) whereClause.price = { [Op.lte]: queryParams.price }
 
   try {
     // Query the database for properties with related information
