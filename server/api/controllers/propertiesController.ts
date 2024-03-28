@@ -65,6 +65,7 @@ const PropertySchema = z.object({
   title: z.string().min(1, 'Title is required.'),
   description: z.string().min(1, 'Description is required.'),
   address: z.string().min(1, 'Address is required.'),
+  propertyTypeId: z.number().nonnegative('propertyTypeId must be a non-negative number.'),
   squareFeet: z.union([z.number(), z.null()]).optional().refine(val => val !== undefined, 'Square feet must be a number or null.'),
   bedrooms: z.number().nonnegative('Bedrooms must be a non-negative number.'),
   bathrooms: z.number().nonnegative('Bathrooms must be a non-negative number.'),

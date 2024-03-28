@@ -114,6 +114,7 @@ export interface PropertyInput {
   title: string
   description: string
   address: string
+  propertyTypeId: number
   squareFeet?: number | null
   bedrooms: number
   bathrooms: number

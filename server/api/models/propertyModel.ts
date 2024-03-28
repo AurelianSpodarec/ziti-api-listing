@@ -35,6 +35,7 @@ class Property extends Model<InferAttributes<Property>, InferCreationAttributes<
   declare title: string
   declare description: string
   declare address: string
+  declare propertyTypeId: number
   declare squareFeet: number | null
   declare bedrooms: number
   declare bathrooms: number
@@ -184,6 +185,16 @@ export const initProperty = (sequelize: Sequelize): typeof Property => {
     address: {
       type: DataTypes.STRING,
       allowNull: false
+    },
+    propertyTypeId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'PropertyTypes',
+        key: 'id'
+      },
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
     },
     squareFeet: {
       type: DataTypes.INTEGER,

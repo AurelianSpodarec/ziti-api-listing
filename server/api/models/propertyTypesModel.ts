@@ -5,12 +5,7 @@ import type Property from './propertyModel'
 
 class PropertyType extends Model {
   declare id: number
-  declare land: boolean
-  declare landDetails: Record<string, any> | null
-  declare apartment: boolean
-  declare apartmentDetails: Record<string, any> | null
-  declare house: boolean
-  declare houseDetails: Record<string, any> | null
+  declare name: string
 
   // Add other fields as needed
 
@@ -32,29 +27,9 @@ export const initPropertyType = (sequelize: Sequelize): typeof PropertyType => {
       primaryKey: true,
       autoIncrement: true
     },
-    land: {
+    name: {
       type: DataTypes.BOOLEAN,
       defaultValue: false
-    },
-    landDetails: {
-      type: DataTypes.JSON,
-      allowNull: true
-    },
-    apartment: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false
-    },
-    apartmentDetails: {
-      type: DataTypes.JSON,
-      allowNull: true
-    },
-    house: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false
-    },
-    houseDetails: {
-      type: DataTypes.JSON,
-      allowNull: true
     }
   }, {
     sequelize,
