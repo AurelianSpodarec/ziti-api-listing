@@ -13,7 +13,7 @@ import ReportedListing from '@api/models/reportedListingsModel'
 export async function getProperties (propertyType?: string): Promise<{ Properties: Property[], SchemaData: Record<string, any> }> {
   const whereClause = {
     published: true,
-    ...(propertyType !== undefined && propertyType !== '' ? { '$PropertyType.type$': propertyType } : {}) // Filter by property type if provided
+    ...(propertyType !== undefined && propertyType !== '' ? { '$PropertyType.name$': propertyType } : {}) // Filter by property type if provided
   }
 
   try {
