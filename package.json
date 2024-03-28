@@ -21,6 +21,8 @@
     "@utils": "dist/utils"
   },
   "dependencies": {
+    "@sentry/node": "^7.108.0",
+    "@sentry/profiling-node": "^7.108.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "express": "^4.18.2",
