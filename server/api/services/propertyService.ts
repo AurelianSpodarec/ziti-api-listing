@@ -22,7 +22,12 @@ export async function getProperties (propertyType?: string): Promise<{ Propertie
       include: [
         { model: Currency, as: 'Currency', attributes: ['id', 'code', 'name', 'symbol'] },
         { model: PropertyStatus, as: 'PropertyStatus' },
-        { model: PropertyType, as: 'PropertyType' },
+        {
+          model: PropertyType,
+          as: 'PropertyType',
+          where: propertyType !== undefined && propertyType !== '' ? { type: propertyType } : undefined,
+          required: false
+        },
         {
           model: Sector,
           as: 'Sector',
@@ -41,13 +46,10 @@ export async function getProperties (propertyType?: string): Promise<{ Propertie
                 attributes: ['id', 'name']
               }]
             }]
-          }],
-          where: whereClause
+          }]
         }
       ],
-      where: {
-        published: true
-      }
+      where: whereClause
     })
 
     // Generate the SchemaData object using the external function
