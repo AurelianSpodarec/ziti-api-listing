@@ -60,7 +60,9 @@ export const initFavoriteProperty = (sequelize: Sequelize): typeof FavoritePrope
         references: {
           model: 'FavoriteCollections',
           key: 'id'
-        }
+        },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
       },
       propertyId: {
         type: DataTypes.UUID,
