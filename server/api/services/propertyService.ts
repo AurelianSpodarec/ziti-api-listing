@@ -11,11 +11,44 @@ import Province from '@api/models/location/provincesModel'
 import Country from '@api/models/location/countriesModel'
 import ReportedListing from '@api/models/reportedListingsModel'
 
-export async function getProperties (propertyType?: string, sectorName?: string): Promise<{ Properties: Property[], SchemaData: Record<string, any> }> {
-  // Simplified where clause for filtering properties by published status
-  const whereClause = {
-    published: true
-  }
+export async function getProperties (queryParams: {
+  propertyType?: string
+  sector?: string
+  squareFeet?: number
+  bedrooms?: number
+  bathrooms?: number
+  parking?: number
+  backyard?: boolean
+  pool?: boolean
+  jacuzzi?: boolean
+  balcony?: boolean
+  terrace?: boolean
+  elevator?: boolean
+  airConditioning?: boolean
+  availabilityDate?: string
+  constructionYear?: string
+  price?: number
+}): Promise<{ Properties: Property[], SchemaData: Record<string, any> }> {
+  // Constructing dynamic where clause based on provided query parameters
+  const whereClause: Record<string, any> = { published: true }
+
+  // Starting with the given parameters:
+  if (queryParams.squareFeet !== null) whereClause.squareFeet = { [Op.gte]: queryParams.squareFeet }
+  if (queryParams.bedrooms !== null) whereClause.bedrooms = queryParams.bedrooms
+  if (queryParams.bathrooms !== null) whereClause.bathrooms = queryParams.bathrooms
+  if (queryParams.parking !== null) whereClause.parking = queryParams.parking
+  if (queryParams.backyard !== undefined) whereClause.backyard = queryParams.backyard
+  if (queryParams.pool !== undefined) whereClause.pool = queryParams.pool
+  if (queryParams.jacuzzi !== undefined) whereClause.jacuzzi = queryParams.jacuzzi
+  if (queryParams.balcony !== undefined) whereClause.balcony = queryParams.balcony
+  if (queryParams.terrace !== undefined) whereClause.terrace = queryParams.terrace
+  if (queryParams.elevator !== undefined) whereClause.elevator = queryParams.elevator
+  if (queryParams.airConditioning !== undefined) whereClause.airConditioning = queryParams.airConditioning
+
+  // Handling date and price filters might require more specific checks or conversions:
+  if (queryParams.availabilityDate !== undefined) whereClause.availabilityDate = { [Op.gte]: new Date(queryParams.availabilityDate) }
+  if (queryParams.constructionYear !== undefined) whereClause.constructionYear = { [Op.gte]: new Date(queryParams.constructionYear) }
+  if (queryParams.price !== null) whereClause.price = { [Op.lte]: queryParams.price }
 
   try {
     // Query the database for properties with related information
@@ -27,14 +60,14 @@ export async function getProperties (propertyType?: string, sectorName?: string)
           // Correctly apply the filter within the PropertyType inclusion
           model: PropertyType,
           as: 'PropertyType',
-          where: propertyType !== undefined && propertyType !== '' ? { name: propertyType } : undefined,
+          where: queryParams.propertyType !== undefined && queryParams.propertyType !== '' ? { name: queryParams.propertyType } : undefined,
           required: false
         },
         {
           model: Sector,
           as: 'Sector',
           attributes: ['id', 'name'],
-          where: sectorName !== undefined && sectorName !== '' ? { name: { [Op.like]: `%${sectorName}%` } } : undefined,
+          where: queryParams.sector !== undefined && queryParams.sector !== '' ? { name: { [Op.like]: `%${queryParams.sector}%` } } : undefined,
           required: false,
           include: [{
             model: Municipality,
