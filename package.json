@@ -4,11 +4,12 @@
   "description": "",
   "main": "bootstrap.js",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && npm run sentry:sourcemaps",
     "start": "NODE_ENV=production node bootstrap.js",
     "dev": "NODE_ENV=development nodemon -r tsconfig-paths/register --exec ts-node server/server.ts",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org ziti --project ziti-api-listings ./dist && sentry-cli sourcemaps upload --org ziti --project ziti-api-listings ./dist"
   },
   "keywords": [],
   "author": "Ziti, Inc.",
@@ -21,6 +22,7 @@
     "@utils": "dist/utils"
   },
   "dependencies": {
+    "@sentry/cli": "^2.31.0",
     "@sentry/node": "^7.108.0",
     "@sentry/profiling-node": "^7.108.0",
     "cookie-parser": "^1.4.6",
