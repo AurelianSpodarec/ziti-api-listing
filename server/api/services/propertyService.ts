@@ -113,6 +113,10 @@ export interface PropertyInput {
   backyard: boolean
   pool: boolean
   jacuzzi: boolean
+  balcony: boolean
+  terrace: boolean
+  elevator: boolean
+  airConditioning: boolean
   availabilityDate?: Date | null
   constructionYear?: Date | null
   price: number
