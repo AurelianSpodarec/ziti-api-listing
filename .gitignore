@@ -47,3 +47,6 @@ dist
 
 # ToDo notes
 ToDo.txt
+
+# Sentry Config File
+.sentryclirc
