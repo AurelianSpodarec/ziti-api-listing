@@ -8,7 +8,8 @@ import * as propertyService from '../services/propertyService'
 
 // Define a Zod schema for the query parameters
 const QuerySchema = z.object({
-  propertyType: z.enum(['house', 'apt']).optional()
+  propertyType: z.enum(['house', 'apt']).optional(),
+  sector: z.string().optional()
 })
 
 export async function getProperties (req: Request, res: Response): Promise<void> {
@@ -16,7 +17,7 @@ export async function getProperties (req: Request, res: Response): Promise<void>
     const queryParams = QuerySchema.parse(req.query)
 
     // Get a list of properties
-    const result = await propertyService.getProperties(queryParams.propertyType)
+    const result = await propertyService.getProperties(queryParams.propertyType, queryParams.sector)
     console.log('\x1b[32m200 OK. Sending properties data.\x1b[0m')
     res.json(result)
   } catch (e) {

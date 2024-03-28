@@ -1,5 +1,6 @@
 // server/api/properties/services/propertyService.ts
 
+import { Op } from 'sequelize'
 import Property from '@api/models/propertyModel'
 import PropertyStatus from '@api/models/propertyStatusesModel'
 import PropertyType from '@api/models/propertyTypesModel'
@@ -10,7 +11,7 @@ import Province from '@api/models/location/provincesModel'
 import Country from '@api/models/location/countriesModel'
 import ReportedListing from '@api/models/reportedListingsModel'
 
-export async function getProperties (propertyType?: string): Promise<{ Properties: Property[], SchemaData: Record<string, any> }> {
+export async function getProperties (propertyType?: string, sectorName?: string): Promise<{ Properties: Property[], SchemaData: Record<string, any> }> {
   // Simplified where clause for filtering properties by published status
   const whereClause = {
     published: true
@@ -33,6 +34,8 @@ export async function getProperties (propertyType?: string): Promise<{ Propertie
           model: Sector,
           as: 'Sector',
           attributes: ['id', 'name'],
+          where: sectorName !== undefined && sectorName !== '' ? { name: { [Op.like]: `%${sectorName}%` } } : undefined,
+          required: false,
           include: [{
             model: Municipality,
             as: 'Municipality',
