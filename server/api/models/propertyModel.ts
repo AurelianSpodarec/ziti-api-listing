@@ -175,15 +175,18 @@ export const initProperty = (sequelize: Sequelize): typeof Property => {
       unique: true
     },
     title: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(50),
       allowNull: false
     },
     description: {
       type: DataTypes.TEXT,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        len: [0, 500]
+      }
     },
     address: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(50),
       allowNull: false
     },
     propertyTypeId: {
