@@ -88,7 +88,7 @@ export async function getProperties (queryParams: {
         },
         {
           model: Image,
-          as: 'Images',
+          as: 'images',
           attributes: ['id', 'url', 'description']
         }
       ],
