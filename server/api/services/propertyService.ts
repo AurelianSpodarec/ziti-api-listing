@@ -10,6 +10,7 @@ import Municipality from '@api/models/location/municipalitiesModel'
 import Province from '@api/models/location/provincesModel'
 import Country from '@api/models/location/countriesModel'
 import ReportedListing from '@api/models/reportedListingsModel'
+import Image from '@api/models/imageModel'
 
 export async function getProperties (queryParams: {
   propertyType?: string
@@ -84,6 +85,11 @@ export async function getProperties (queryParams: {
               }]
             }]
           }]
+        },
+        {
+          model: Image,
+          as: 'Images',
+          attributes: ['id', 'url', 'description']
         }
       ],
       where: whereClause
