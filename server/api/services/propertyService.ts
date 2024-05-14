@@ -107,7 +107,7 @@ export async function getProperties (queryParams: {
   }
 }
 
-export async function getProperty (id: string): Promise<{ Property: Property | null }> {
+export async function getProperty (id: string): Promise<{ Property: Property | null, SchemaData: Record<string, any>, OpenGraph: Record<string, any> }> {
   try {
     // Query the database for the property
     const property = await Property.findOne({
@@ -149,10 +149,13 @@ export async function getProperty (id: string): Promise<{ Property: Property | n
     })
 
     if (property === null) {
-      return { Property: null } // Return null when property is not found
+      return { Property: null, SchemaData: {}, OpenGraph: {} }
     }
 
-    return { Property: property }
+    const schemaData = {}
+    const openGraph = {}
+
+    return { Property: property, SchemaData: schemaData, OpenGraph: openGraph }
   } catch (error) {
     console.error('Error fetching property from the database:', error)
     throw error
