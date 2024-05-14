@@ -133,6 +133,11 @@ export async function getProperty (id: string): Promise<{ Property: Property | n
               }]
             }]
           }]
+        },
+        {
+          model: Image,
+          as: 'images',
+          attributes: ['id', 'url', 'description']
         }
       ],
       where: {
