@@ -89,7 +89,7 @@ export async function getProperties (queryParams: {
         {
           model: Image,
           as: 'images',
-          attributes: ['id', 'url', 'description']
+          attributes: ['id', 'url', 'description', 'width', 'height']
         }
       ],
       where: whereClause
