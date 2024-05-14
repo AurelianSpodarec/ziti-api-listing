@@ -89,7 +89,8 @@ export async function getProperties (queryParams: {
         {
           model: Image,
           as: 'images',
-          attributes: ['id', 'url', 'description', 'width', 'height']
+          attributes: ['id', 'displayOrder', 'url', 'description', 'width', 'height'],
+          order: [['displayOrder', 'ASC']]
         }
       ],
       where: whereClause
@@ -137,7 +138,8 @@ export async function getProperty (id: string): Promise<{ Property: Property | n
         {
           model: Image,
           as: 'images',
-          attributes: ['id', 'url', 'description', 'width', 'height']
+          attributes: ['id', 'displayOrder', 'url', 'description', 'width', 'height'],
+          order: [['displayOrder', 'ASC']]
         }
       ],
       where: {
