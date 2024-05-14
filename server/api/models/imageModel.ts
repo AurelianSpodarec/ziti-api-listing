@@ -62,10 +62,10 @@ export const initImage = (sequelize: Sequelize): typeof Image => {
       allowNull: false
     },
     description: {
-      type: DataTypes.STRING(80),
+      type: DataTypes.STRING(120),
       allowNull: false,
       validate: {
-        len: [0, 80]
+        len: [0, 120]
       }
     },
     height: {
