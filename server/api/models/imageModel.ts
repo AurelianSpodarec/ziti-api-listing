@@ -19,6 +19,8 @@ class Image extends Model<InferAttributes<Image>, InferCreationAttributes<Image>
   declare propertyId: ForeignKey<string>
   declare url: string
   declare description: string | null
+  declare height: number | null
+  declare width: number | null
 
   // timestamps!
   declare readonly createdAt?: CreationOptional<Date>
@@ -60,7 +62,18 @@ export const initImage = (sequelize: Sequelize): typeof Image => {
       allowNull: false
     },
     description: {
-      type: DataTypes.TEXT,
+      type: DataTypes.STRING(80),
+      allowNull: false,
+      validate: {
+        len: [0, 80]
+      }
+    },
+    height: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    width: {
+      type: DataTypes.INTEGER,
       allowNull: true
     },
     createdAt: DataTypes.DATE,
