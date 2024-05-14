@@ -58,7 +58,7 @@ export async function getProperty (req: Request, res: Response): Promise<void> {
       return
     }
     console.log('\x1b[32m200 OK. Sending property data.\x1b[0m')
-    res.json(result.Property)
+    res.json(result)
   } catch (e) {
     if (e instanceof z.ZodError) {
       console.error('\x1b[31m400 Bad Request. Validation error:', e.errors[0].message, '\x1b[0m')
