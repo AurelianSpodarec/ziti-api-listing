@@ -18,7 +18,7 @@ class Image extends Model<InferAttributes<Image>, InferCreationAttributes<Image>
   declare id: CreationOptional<string>
   declare propertyId: ForeignKey<string>
   declare url: string
-  declare description: string | null
+  declare description: string
   declare width: number | null
   declare height: number | null
   declare displayOrder: number | null
