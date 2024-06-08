@@ -15,6 +15,7 @@ import Image from '@api/models/imageModel'
 export async function getProperties (queryParams: {
   propertyType?: string
   sector?: string
+  seller?: string
   squareFeet?: number
   bedrooms?: number
   bathrooms?: number
@@ -50,6 +51,9 @@ export async function getProperties (queryParams: {
   if (queryParams.availabilityDate !== undefined) whereClause.availabilityDate = { [Op.gte]: new Date(queryParams.availabilityDate) }
   if (queryParams.constructionYear !== undefined) whereClause.constructionYear = { [Op.gte]: new Date(queryParams.constructionYear) }
   if (queryParams.price !== undefined) whereClause.price = { [Op.lte]: queryParams.price }
+  if (queryParams.seller !== undefined) whereClause.listingOwnerId = queryParams.seller
+
+  console.log('Where Clause:', whereClause);
 
   try {
     // Query the database for properties with related information
