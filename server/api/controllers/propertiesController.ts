@@ -23,11 +23,13 @@ const QuerySchema = z.object({
   airConditioning: z.boolean().optional(),
   availabilityDate: z.string().optional(), // Use appropriate date handling
   constructionYear: z.string().optional(), // Use appropriate date handling
-  price: z.number().optional()
+  price: z.number().optional(),
+  seller: z.string().uuid().optional()
 })
 
 export async function getProperties (req: Request, res: Response): Promise<void> {
   try {
+    console.log('Incoming Query Params:', req.query);
     const queryParams = QuerySchema.parse(req.query)
 
     // Get a list of properties
